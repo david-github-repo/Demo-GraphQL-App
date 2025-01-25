@@ -1,6 +1,6 @@
 import prisma from './services/prisma.js';
 
-console.log('Demo GraphQL App');
+console.log('Demo GraphQL App: SDL first');
 console.log('----------------\n');
 
 import { ApolloServer } from '@apollo/server';
