@@ -1,15 +1,25 @@
-import prisma from './services/prisma.js';
+import 'reflect-metadata';
 
 console.log('Demo GraphQL App: Code first');
 console.log('----------------\n');
 
 import { ApolloServer } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone';
+import { buildSchema, buildSchemaSync } from 'type-graphql';
+import { resolvers } from '@generated/type-graphql';
+import prisma from './services/prisma';
 
-/* const server = new ApolloServer({ typeDefs: schema, resolvers });
+const bootstrap = async () => {
+  const schema = await buildSchema({ resolvers, validate: false });
 
-const { url } = await startStandaloneServer(server, {
-  listen: { port: 3000 },
-});
+  const server = new ApolloServer({ schema });
 
-console.log(`Server running at ${url}`); */
+  const { url } = await startStandaloneServer(server, {
+    listen: { port: 3000 },
+    context: async () => ({ prisma }),
+  });
+
+  console.log(`Server running at ${url}`);
+};
+
+bootstrap();
